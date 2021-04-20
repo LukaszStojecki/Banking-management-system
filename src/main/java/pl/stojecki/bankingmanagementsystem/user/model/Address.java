@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -17,7 +18,6 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     private String city;
     private String street;
     private String postCode;
@@ -27,5 +27,5 @@ public class Address {
     private String phoneNumber;
     @OneToOne(mappedBy = "address")
     private User user;
-    private Instant dateOfBirth;
+    private LocalDate dateOfBirth;
 }
