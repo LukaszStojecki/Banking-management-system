@@ -1,6 +1,5 @@
 package pl.stojecki.bankingmanagementsystem.error;
 
-import javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -9,6 +8,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import pl.stojecki.bankingmanagementsystem.exception.BadRequestException;
 import pl.stojecki.bankingmanagementsystem.exception.ConflictException;
 import pl.stojecki.bankingmanagementsystem.exception.EmailException;
+import pl.stojecki.bankingmanagementsystem.exception.NotFoundException;
 
 @ControllerAdvice
 public class GlobalErrorHandler extends ResponseEntityExceptionHandler {

@@ -1,5 +1,6 @@
 package pl.stojecki.bankingmanagementsystem.user.service.impl;
 
+import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +24,7 @@ import pl.stojecki.bankingmanagementsystem.user.service.UserService;
 import pl.stojecki.bankingmanagementsystem.user.utils.PhoneNumberValidator;
 import pl.stojecki.bankingmanagementsystem.user.utils.PostCodeValidator;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -82,7 +84,7 @@ public class UserServiceImpl implements UserService {
 
         mailService.sendRegisterEmail(new NotificationEmail("Please activate your account",
                 user.getEmail(), "Please click the link below to activate your account " +
-                "http://localhost:8080/api/auth/" + token + "Your identification number is:" + identifier));
+                "http://localhost:8080/api/auth/verification/" + token + " Your identification number is:" + identifier));
     }
 
     @Override
@@ -94,6 +96,25 @@ public class UserServiceImpl implements UserService {
 
         verificationTokenRepository.save(verificationToken);
         return token;
+    }
+
+    @Override
+    @Transactional
+    public void fetchUserAndEnable(VerificationToken verificationToken) throws NotFoundException {
+        String identificationNumber = verificationToken.getUser().getUsername();
+        User user = userRepository.findByIdentificationNumber(identificationNumber).orElseThrow(() -> new NotFoundException("User not found " + identificationNumber));
+        user.setEnabled(true);
+        user.setCredentials(true);
+        user.setLocked(true);
+        user.setExpired(true);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void verifyAccount(String token) throws NotFoundException {
+        Optional<VerificationToken> verificationToken = verificationTokenRepository.findByToken(token);
+        verificationToken.orElseThrow(() -> new BadRequestException("Invalid Token"));
+        fetchUserAndEnable(verificationToken.get());
     }
 
     private String generateIdentifier() {
