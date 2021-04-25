@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.stojecki.bankingmanagementsystem.exception.ConflictException;
 import pl.stojecki.bankingmanagementsystem.exception.EmailException;
+import pl.stojecki.bankingmanagementsystem.user.dto.AuthenticationResponse;
+import pl.stojecki.bankingmanagementsystem.user.dto.LoginRequest;
 import pl.stojecki.bankingmanagementsystem.user.dto.RegisterRequest;
 import pl.stojecki.bankingmanagementsystem.user.service.UserService;
 
@@ -31,5 +33,10 @@ public class UserController {
         userService.verifyAccount(token);
         return new ResponseEntity<>("Account activated successfully", HttpStatus.OK);
 
+    }
+
+    @PostMapping("/login")
+    public AuthenticationResponse login(@RequestBody LoginRequest loginRequest) {
+        return userService.login(loginRequest);
     }
 }
