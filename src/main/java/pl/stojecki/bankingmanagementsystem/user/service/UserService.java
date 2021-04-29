@@ -47,45 +47,19 @@ public class UserService {
     @Transactional
     public void signup(RegisterRequest registerRequest) throws EmailException, ConflictException {
 
-        if (userRepository.existsByEmail(registerRequest.getEmail())){
-            throw new ConflictException("Email already exists");
-        }
-        if (userRepository.existsByAddress_PhoneNumber(registerRequest.getPhoneNumber())){
-            throw new ConflictException("Phone number already exists");
-        }
-        if (!PostCodeValidator.PostCodeValidator(registerRequest.getPostCode())){
-            throw new BadRequestException("Post code needs to have dd-ddd format");
-        }
-        if (!PhoneNumberValidator.isValid(registerRequest.getPhoneNumber())){
-            throw new BadRequestException("Phone number needs to have ddd-ddd-ddd format");
-        }
-        User user = new User();
-        Address address = new Address();
-        address.setCity(registerRequest.getCity());
-        address.setHouseNumber(registerRequest.getHouseNumber());
-        address.setName(registerRequest.getFirstName());
-        address.setSurname(registerRequest.getLastName());
-        address.setStreet(registerRequest.getStreet());
-        address.setPhoneNumber(registerRequest.getPhoneNumber());
-        address.setPostCode(registerRequest.getPostCode());
-        address.setDateOfBirth(registerRequest.getDateOfBirth());
+        registerValidator(registerRequest);
+
+        User user = createUser(registerRequest);
+        Address address = createAddress(registerRequest);
         user.setAddress(address);
-        user.setEmail(registerRequest.getEmail());
-        user.setLocked(false);
-        user.setEnabled(false);
-        user.setCredentials(false);
-        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        user.setRoles(Role.USER);
-        String identifier = generateIdentifier();
-        user.setIdentificationNumber(identifier);
-        userRepository.save(user);
-        addressRepository.save(address);
 
         String token = generateVerificationToken(user);
 
-        mailService.sendRegisterEmail(new NotificationEmail("Please activate your account",
-                user.getEmail(), "Please click the link below to activate your account " +
-                "http://localhost:8080/api/auth/verification/" + token + " Your identification number is:" + identifier));
+        String identifier = user.getIdentificationNumber();
+
+        mailService.sendRegisterEmail(new NotificationEmail("Please activate your account", ""
+                + user.getEmail(), "Please click the link below to activate your account " + "\n" + "\n" +
+                "http:localhost:8080/auth/accountVerification/" + token +  "\n" + "\n" +" Your identification number is: " + identifier));
     }
 
 
@@ -133,9 +107,56 @@ public class UserService {
         ));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtProvider.generateToken(authentication);
-        return  AuthenticationResponse.builder()
+        return AuthenticationResponse.builder()
                 .authenticationToken(token)
                 .identificationNumber(loginRequest.getIdentificationNumber())
                 .build();
+    }
+
+    public boolean registerValidator(RegisterRequest registerRequest) throws ConflictException {
+        if (userRepository.existsByEmail(registerRequest.getEmail())) {
+            throw new ConflictException("Email already exists");
+        }
+        if (userRepository.existsByAddress_PhoneNumber(registerRequest.getPhoneNumber())) {
+            throw new ConflictException("Phone number already exists");
+        }
+        if (!PostCodeValidator.PostCodeValidator(registerRequest.getPostCode())) {
+            throw new BadRequestException("Post code needs to have dd-ddd format");
+        }
+        if (!PhoneNumberValidator.isValid(registerRequest.getPhoneNumber())) {
+            throw new BadRequestException("Phone number needs to have ddd-ddd-ddd format");
+        }
+        return true;
+    }
+
+    public User createUser(RegisterRequest registerRequest) {
+
+        User user = new User();
+        user.setEmail(registerRequest.getEmail());
+        user.setLocked(false);
+        user.setEnabled(false);
+        user.setCredentials(false);
+        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        user.setRoles(Role.USER);
+        String identifier = generateIdentifier();
+        user.setIdentificationNumber(identifier);
+        userRepository.save(user);
+
+
+        return user;
+    }
+
+    public Address createAddress(RegisterRequest registerRequest){
+        Address address = new Address();
+        address.setCity(registerRequest.getCity());
+        address.setHouseNumber(registerRequest.getHouseNumber());
+        address.setName(registerRequest.getFirstName());
+        address.setSurname(registerRequest.getLastName());
+        address.setStreet(registerRequest.getStreet());
+        address.setPhoneNumber(registerRequest.getPhoneNumber());
+        address.setPostCode(registerRequest.getPostCode());
+        address.setDateOfBirth(registerRequest.getDateOfBirth());
+        addressRepository.save(address);
+        return address;
     }
 }
