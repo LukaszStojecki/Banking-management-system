@@ -28,6 +28,7 @@ import pl.stojecki.bankingmanagementsystem.user.security.JwtProvider;
 import pl.stojecki.bankingmanagementsystem.user.utils.PhoneNumberValidator;
 import pl.stojecki.bankingmanagementsystem.user.utils.PostCodeValidator;
 
+import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -59,7 +60,9 @@ public class UserService {
 
         mailService.sendRegisterEmail(new NotificationEmail("Please activate your account", ""
                 + user.getEmail(), "Please click the link below to activate your account " + "\n" + "\n" +
-                "http:localhost:8080/auth/accountVerification/" + token +  "\n" + "\n" +" Your identification number is: " + identifier));
+                "http:localhost:8080/auth/accountVerification/" + token +  "\n" + "\n" +
+                " Your identification number is: " + identifier
+                + "\n" + "\n" + "We are informing you that the above link will expire 24 hours after being sent."));
     }
 
 
@@ -68,6 +71,7 @@ public class UserService {
         VerificationToken verificationToken = new VerificationToken();
         verificationToken.setToken(token);
         verificationToken.setUser(user);
+        verificationToken.setExpirationDate(Instant.now().plusSeconds(86400));
 
         verificationTokenRepository.save(verificationToken);
         return token;
@@ -141,8 +145,6 @@ public class UserService {
         String identifier = generateIdentifier();
         user.setIdentificationNumber(identifier);
         userRepository.save(user);
-
-
         return user;
     }
 
