@@ -9,6 +9,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import pl.stojecki.bankingmanagementsystem.user.model.User;
 
+import java.time.Instant;
+import java.util.Date;
+
 
 @AllArgsConstructor
 @Service
@@ -16,7 +19,7 @@ public class JwtProvider {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtProvider.class);
 
-    private final String jwtSecret = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.cThIIoDvwdueQB468K5xDc5633seEFoqwxjF_xSJyQQ";
+    private final String jwtSecret = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJhdXRob3JpdGllcyI6IlVTRVIifQ._zkEUs4vnH3GGT3ogErenZTJ3o5yjwliVVNhZXskyAI";
 
 
     public String generateToken(Authentication authentication) {
@@ -24,6 +27,9 @@ public class JwtProvider {
 
         return Jwts.builder()
                 .setSubject(user.getIdentificationNumber())
+                .claim("authorities", user.getAuthorities())
+                .setIssuedAt(Date.from(Instant.now()))
+                .setExpiration(new Date(System.currentTimeMillis() + 10000))
                 .signWith(Keys.hmacShaKeyFor(jwtSecret.getBytes()))
                 .compact();
     }
