@@ -1,6 +1,5 @@
 package pl.stojecki.bankingmanagementsystem.user.service;
 
-import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.stojecki.bankingmanagementsystem.exception.BadRequestException;
 import pl.stojecki.bankingmanagementsystem.exception.ConflictException;
 import pl.stojecki.bankingmanagementsystem.exception.EmailException;
+import pl.stojecki.bankingmanagementsystem.exception.NotFoundException;
 import pl.stojecki.bankingmanagementsystem.user.dto.AuthenticationResponse;
 import pl.stojecki.bankingmanagementsystem.user.dto.LoginRequest;
 import pl.stojecki.bankingmanagementsystem.user.dto.NotificationEmail;
@@ -93,7 +93,11 @@ public class UserService {
     public void verifyAccount(String token) throws NotFoundException {
         Optional<VerificationToken> verificationToken = verificationTokenRepository.findByToken(token);
         verificationToken.orElseThrow(() -> new BadRequestException("Invalid Token"));
-        fetchUserAndEnable(verificationToken.get());
+        if (verificationToken.get().getExpirationDate().isAfter(Instant.now())) {
+            fetchUserAndEnable(verificationToken.get());
+        } else {
+            throw new BadRequestException("Token has expired");
+        }
     }
 
     private String generateIdentifier() {
