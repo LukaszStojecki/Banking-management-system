@@ -57,10 +57,14 @@ public class PasswordResetTokenService {
         PasswordResetToken passwordResetToken = passwordResetTokenRepository.findByToken(token)
                 .orElseThrow(() -> new NotFoundException("Token not found " + token));
         User user = passwordResetToken.getUser();
-        if (passwordEncoder.matches(passwordResetTokenRequest.getNewPassword(), user.getPassword())){
+        if (passwordEncoder.matches(passwordResetTokenRequest.getNewPassword(), user.getPassword())) {
             throw new BadRequestException("New password cannot be the same as the old password");
         }
-        user.setPassword(passwordEncoder.encode(passwordResetTokenRequest.getNewPassword()));
-        userRepository.save(user);
+        if (passwordResetToken.getCreatedDate().isAfter(Instant.now())) {
+            user.setPassword(passwordEncoder.encode(passwordResetTokenRequest.getNewPassword()));
+            userRepository.save(user);
+        } else {
+            throw new BadRequestException("Token has expired");
+        }
     }
 }
