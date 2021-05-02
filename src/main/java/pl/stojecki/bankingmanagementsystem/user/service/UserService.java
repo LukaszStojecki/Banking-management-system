@@ -60,7 +60,7 @@ public class UserService {
 
         mailService.sendRegisterEmail(new NotificationEmail("Please activate your account", ""
                 + user.getEmail(), "Please click the link below to activate your account " + "\n" + "\n" +
-                "http:localhost:8080/auth/accountVerification/" + token +  "\n" + "\n" +
+                "http:localhost:8080/auth/accountVerification/" + token + "\n" + "\n" +
                 " Your identification number is: " + identifier
                 + "\n" + "\n" + "We are informing you that the above link will expire 24 hours after being sent."));
     }
@@ -138,7 +138,6 @@ public class UserService {
     }
 
     public User createUser(RegisterRequest registerRequest) {
-
         User user = new User();
         user.setEmail(registerRequest.getEmail());
         user.setLocked(false);
@@ -152,7 +151,7 @@ public class UserService {
         return user;
     }
 
-    public Address createAddress(RegisterRequest registerRequest){
+    public Address createAddress(RegisterRequest registerRequest) {
         Address address = new Address();
         address.setCity(registerRequest.getCity());
         address.setHouseNumber(registerRequest.getHouseNumber());
@@ -164,5 +163,14 @@ public class UserService {
         address.setDateOfBirth(registerRequest.getDateOfBirth());
         addressRepository.save(address);
         return address;
+    }
+
+    public void remindIdentificationNumber(String email) throws EmailException, NotFoundException {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new pl.stojecki.bankingmanagementsystem.exception.NotFoundException("No identification  number found for given email"));
+        mailService.sendRegisterEmail(new NotificationEmail(
+                "Reminder of the identification number for a banking system user",
+                email,
+                "Your identification number is: " + user.getIdentificationNumber()));
     }
 }
