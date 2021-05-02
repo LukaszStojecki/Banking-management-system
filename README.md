@@ -27,4 +27,4 @@ Application used to manage a bank account.
 Project is: in progress
 
 ## Contact
-lukasz.stojecki2o2.pl - feel free to contact me!
+lukasz.stojecki@o2.pl - feel free to contact me!
