@@ -13,15 +13,10 @@ import pl.stojecki.bankingmanagementsystem.exception.BadRequestException;
 import pl.stojecki.bankingmanagementsystem.exception.ConflictException;
 import pl.stojecki.bankingmanagementsystem.exception.EmailException;
 import pl.stojecki.bankingmanagementsystem.exception.NotFoundException;
-import pl.stojecki.bankingmanagementsystem.user.dto.AuthenticationResponse;
-import pl.stojecki.bankingmanagementsystem.user.dto.LoginRequest;
-import pl.stojecki.bankingmanagementsystem.user.dto.NotificationEmail;
-import pl.stojecki.bankingmanagementsystem.user.dto.RegisterRequest;
-import pl.stojecki.bankingmanagementsystem.user.model.Address;
-import pl.stojecki.bankingmanagementsystem.user.model.Role;
-import pl.stojecki.bankingmanagementsystem.user.model.User;
-import pl.stojecki.bankingmanagementsystem.user.model.VerificationToken;
+import pl.stojecki.bankingmanagementsystem.user.dto.*;
+import pl.stojecki.bankingmanagementsystem.user.model.*;
 import pl.stojecki.bankingmanagementsystem.user.repository.AddressRepository;
+import pl.stojecki.bankingmanagementsystem.user.repository.RefreshTokenRepository;
 import pl.stojecki.bankingmanagementsystem.user.repository.UserRepository;
 import pl.stojecki.bankingmanagementsystem.user.repository.VerificationTokenRepository;
 import pl.stojecki.bankingmanagementsystem.user.security.JwtProvider;
@@ -43,6 +38,9 @@ public class UserService {
     private final AddressRepository addressRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
+    private final RefreshTokenService refreshTokenService;
+    private final PasswordResetTokenService passwordResetTokenService;
+    private final RefreshTokenRepository refreshTokenRepository;
 
 
     @Transactional
@@ -72,7 +70,6 @@ public class UserService {
         verificationToken.setToken(token);
         verificationToken.setUser(user);
         verificationToken.setExpirationDate(Instant.now().plusSeconds(86400));
-
         verificationTokenRepository.save(verificationToken);
         return token;
     }
@@ -109,15 +106,22 @@ public class UserService {
         return identifier;
     }
 
+    @Transactional
     public AuthenticationResponse login(LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginRequest.getIdentificationNumber(), loginRequest.getPassword()
         ));
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        User user = (User) authentication.getPrincipal();
+
+        RefreshToken refreshToken = refreshTokenService.generateRefreshToken(user);
+
         String token = jwtProvider.generateToken(authentication);
         return AuthenticationResponse.builder()
                 .authenticationToken(token)
                 .identificationNumber(loginRequest.getIdentificationNumber())
+                .refreshToken(refreshToken.getToken())
+                .expiryDuration(Instant.now().plusSeconds(43200))
                 .build();
     }
 
@@ -173,4 +177,32 @@ public class UserService {
                 email,
                 "Your identification number is: " + user.getIdentificationNumber()));
     }
+
+    @Transactional
+    public AuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) throws NotFoundException {
+
+        User user = userRepository.findByIdentificationNumber(refreshTokenRequest.getIdentificationNumber())
+                .orElseThrow(() -> new NotFoundException("User not found"));
+        RefreshToken refreshToken = refreshTokenService.findByToken(refreshTokenRequest.getRefreshToken())
+                .orElseThrow(()->new NotFoundException("Refresh token not found"));
+
+        Role userRole = user.getRoles();
+        String identificationNumber = user.getIdentificationNumber();
+        String token = jwtProvider.generateTokenFromUserIdentificationAndRole(identificationNumber, userRole);
+        refreshTokenService.increaseCount(refreshToken);
+        refreshTokenService.verifyExpiration(refreshToken);
+
+        return AuthenticationResponse.builder()
+                .authenticationToken(token)
+                .refreshToken(refreshTokenRequest.getRefreshToken())
+                .identificationNumber(identificationNumber)
+                .expiryDuration(Instant.now().plusSeconds(43200))
+                .build();
+    }
+
+   @Transactional
+    public void deleteByUserId(Long userId) throws NotFoundException {
+       refreshTokenRepository.deleteByUser(userRepository.findById(userId)
+               .orElseThrow(() -> new NotFoundException("User of " + userId + " not found")));
+   }
 }

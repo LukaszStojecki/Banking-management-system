@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.stojecki.bankingmanagementsystem.exception.ConflictException;
 import pl.stojecki.bankingmanagementsystem.exception.EmailException;
 import pl.stojecki.bankingmanagementsystem.exception.NotFoundException;
-import pl.stojecki.bankingmanagementsystem.user.dto.AuthenticationResponse;
-import pl.stojecki.bankingmanagementsystem.user.dto.LoginRequest;
-import pl.stojecki.bankingmanagementsystem.user.dto.RegisterRequest;
+import pl.stojecki.bankingmanagementsystem.user.dto.*;
 import pl.stojecki.bankingmanagementsystem.user.service.UserService;
 
 import javax.validation.Valid;
@@ -46,4 +44,14 @@ public class UserController {
         return new ResponseEntity<>("Identification number reminder email successfully sent", HttpStatus.OK);
     }
 
+    @PostMapping("/refreshToken")
+    public AuthenticationResponse refreshTokens(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest) throws NotFoundException {
+        return userService.refreshToken(refreshTokenRequest);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logoutUser(@Valid @RequestBody LogOutRequest logOutRequest) throws NotFoundException {
+        userService.deleteByUserId(logOutRequest.getUserId());
+        return new ResponseEntity<>("Log out successful!", HttpStatus.OK);
+    }
 }

@@ -6,11 +6,14 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
+import pl.stojecki.bankingmanagementsystem.user.model.Role;
 import pl.stojecki.bankingmanagementsystem.user.model.User;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.Set;
 
 
 @AllArgsConstructor
@@ -29,7 +32,7 @@ public class JwtProvider {
                 .setSubject(user.getIdentificationNumber())
                 .claim("authorities", user.getAuthorities())
                 .setIssuedAt(Date.from(Instant.now()))
-                .setExpiration(new Date(System.currentTimeMillis() + 10000))
+                .setExpiration(Date.from(Instant.now().plusSeconds(43200)))
                 .signWith(Keys.hmacShaKeyFor(jwtSecret.getBytes()))
                 .compact();
     }
@@ -53,6 +56,16 @@ public class JwtProvider {
     public String getUsername(String token) {
         Claims claims = Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(jwtSecret.getBytes())).build().parseClaimsJws(token).getBody();
         return claims.getSubject();
+    }
+
+    public String generateTokenFromUserIdentificationAndRole(String identificationNumber, Role role) {
+        return Jwts.builder()
+                .setSubject(identificationNumber)
+                .claim("authorities", Set.of(new SimpleGrantedAuthority(role.toString())))
+                .setIssuedAt(Date.from(Instant.now()))
+                .setExpiration(Date.from(Instant.now().plusSeconds(43200)))
+                .signWith(Keys.hmacShaKeyFor(jwtSecret.getBytes()))
+                .compact();
     }
 
 }

@@ -1,21 +1,15 @@
 package pl.stojecki.bankingmanagementsystem.user.dto;
 
+
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
-
-
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-@Builder
-public class AuthenticationResponse {
+public class RefreshTokenRequest {
 
-    private String authenticationToken;
     private String refreshToken;
-    private Instant expiryDuration;
     private String identificationNumber;
 }

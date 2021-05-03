@@ -5,10 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import pl.stojecki.bankingmanagementsystem.exception.BadRequestException;
-import pl.stojecki.bankingmanagementsystem.exception.ConflictException;
-import pl.stojecki.bankingmanagementsystem.exception.EmailException;
-import pl.stojecki.bankingmanagementsystem.exception.NotFoundException;
+import pl.stojecki.bankingmanagementsystem.exception.*;
 
 @ControllerAdvice
 public class GlobalErrorHandler extends ResponseEntityExceptionHandler {
@@ -35,6 +32,12 @@ public class GlobalErrorHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = BadRequestException.class)
     public ResponseEntity<Object> handlePasswordValidation(BadRequestException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorDetails(e.getMessage()));
+    }
+
+    @ExceptionHandler(value = TokenRefreshException.class)
+    public ResponseEntity<Object> handleTokenRefreshException(TokenRefreshException e) {
+        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
                 .body(new ErrorDetails(e.getMessage()));
     }
 }
