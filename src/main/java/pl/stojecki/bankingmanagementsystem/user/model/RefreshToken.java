@@ -7,18 +7,24 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.Instant;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
+@Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class VerificationToken {
+public class RefreshToken {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
     private String token;
     @OneToOne(fetch = FetchType.LAZY)
     private User user;
-    private Instant expirationDate;
+    private Long refreshCount;
+    private Instant expiryDate;
 
+    public void incrementRefreshCount() {
+        refreshCount = refreshCount + 1;
+    }
 }

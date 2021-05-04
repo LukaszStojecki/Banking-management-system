@@ -13,7 +13,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResetToken {
+public class PasswordResetToken {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
