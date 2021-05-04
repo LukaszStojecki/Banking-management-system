@@ -20,6 +20,7 @@ import pl.stojecki.bankingmanagementsystem.user.repository.RefreshTokenRepositor
 import pl.stojecki.bankingmanagementsystem.user.repository.UserRepository;
 import pl.stojecki.bankingmanagementsystem.user.repository.VerificationTokenRepository;
 import pl.stojecki.bankingmanagementsystem.user.security.JwtProvider;
+import pl.stojecki.bankingmanagementsystem.user.security.JwtUtils;
 import pl.stojecki.bankingmanagementsystem.user.utils.PhoneNumberValidator;
 import pl.stojecki.bankingmanagementsystem.user.utils.PostCodeValidator;
 
@@ -39,8 +40,8 @@ public class UserService {
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
     private final RefreshTokenService refreshTokenService;
-    private final PasswordResetTokenService passwordResetTokenService;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final JwtUtils jwtUtils;
 
 
     @Transactional
@@ -121,7 +122,7 @@ public class UserService {
                 .authenticationToken(token)
                 .identificationNumber(loginRequest.getIdentificationNumber())
                 .refreshToken(refreshToken.getToken())
-                .expiryDuration(Instant.now().plusSeconds(43200))
+                .expiryDuration(Instant.now().plusSeconds(jwtUtils.getJwtExpirationSec()))
                 .build();
     }
 
@@ -196,7 +197,7 @@ public class UserService {
                 .authenticationToken(token)
                 .refreshToken(refreshTokenRequest.getRefreshToken())
                 .identificationNumber(identificationNumber)
-                .expiryDuration(Instant.now().plusSeconds(43200))
+                .expiryDuration(Instant.now().plusSeconds(jwtUtils.getRefreshTokenDurationSec()))
                 .build();
     }
 

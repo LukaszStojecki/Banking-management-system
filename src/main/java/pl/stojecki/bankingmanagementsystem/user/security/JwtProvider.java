@@ -1,29 +1,29 @@
 package pl.stojecki.bankingmanagementsystem.user.security;
 
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import pl.stojecki.bankingmanagementsystem.user.model.Role;
 import pl.stojecki.bankingmanagementsystem.user.model.User;
 
+import javax.crypto.SecretKey;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Set;
 
 
 @AllArgsConstructor
-@Service
+@Component
 public class JwtProvider {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtProvider.class);
 
-    private final String jwtSecret = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJhdXRob3JpdGllcyI6IlVTRVIifQ._zkEUs4vnH3GGT3ogErenZTJ3o5yjwliVVNhZXskyAI";
-
+    private final SecretKey secretKey;
+    private final JwtUtils jwtUtils;
 
     public String generateToken(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
@@ -32,14 +32,14 @@ public class JwtProvider {
                 .setSubject(user.getIdentificationNumber())
                 .claim("authorities", user.getAuthorities())
                 .setIssuedAt(Date.from(Instant.now()))
-                .setExpiration(Date.from(Instant.now().plusSeconds(43200)))
-                .signWith(Keys.hmacShaKeyFor(jwtSecret.getBytes()))
+                .setExpiration(Date.from(Instant.now().plusSeconds(jwtUtils.getJwtExpirationSec())))
+                .signWith(secretKey)
                 .compact();
     }
 
     public boolean validateToken(String jwt) {
         try {
-            Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(jwtSecret.getBytes())).build().parseClaimsJws(jwt);
+            Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(jwt);
             return true;
         } catch (MalformedJwtException e) {
             logger.error("Invalid JWT token: {}", e.getMessage());
@@ -54,7 +54,7 @@ public class JwtProvider {
     }
 
     public String getUsername(String token) {
-        Claims claims = Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(jwtSecret.getBytes())).build().parseClaimsJws(token).getBody();
+        Claims claims = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
         return claims.getSubject();
     }
 
@@ -63,8 +63,8 @@ public class JwtProvider {
                 .setSubject(identificationNumber)
                 .claim("authorities", Set.of(new SimpleGrantedAuthority(role.toString())))
                 .setIssuedAt(Date.from(Instant.now()))
-                .setExpiration(Date.from(Instant.now().plusSeconds(43200)))
-                .signWith(Keys.hmacShaKeyFor(jwtSecret.getBytes()))
+                .setExpiration(Date.from(Instant.now().plusSeconds(jwtUtils.getJwtExpirationSec())))
+                .signWith(secretKey)
                 .compact();
     }
 

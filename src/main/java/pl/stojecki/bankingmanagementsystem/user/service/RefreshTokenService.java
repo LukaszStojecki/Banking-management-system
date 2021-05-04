@@ -7,6 +7,8 @@ import pl.stojecki.bankingmanagementsystem.exception.TokenRefreshException;
 import pl.stojecki.bankingmanagementsystem.user.model.RefreshToken;
 import pl.stojecki.bankingmanagementsystem.user.model.User;
 import pl.stojecki.bankingmanagementsystem.user.repository.RefreshTokenRepository;
+import pl.stojecki.bankingmanagementsystem.user.security.JwtUtils;
+
 import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
@@ -16,6 +18,7 @@ import java.util.UUID;
 public class RefreshTokenService {
 
     private final RefreshTokenRepository refreshTokenRepository;
+    private final JwtUtils jwtUtils;
 
     public Optional<RefreshToken> findByToken(String token) {
         return refreshTokenRepository.findByToken(token);
@@ -24,7 +27,7 @@ public class RefreshTokenService {
     public RefreshToken generateRefreshToken(User user) {
         RefreshToken refreshToken = new RefreshToken();
         refreshToken.setToken(UUID.randomUUID().toString());
-        refreshToken.setExpiryDate(Instant.now().plusSeconds(86400));
+        refreshToken.setExpiryDate(Instant.now().plusSeconds(jwtUtils.getRefreshTokenDurationSec()));
         refreshToken.setUser(user);
         refreshToken.setRefreshCount(0L);
         refreshTokenRepository.save(refreshToken);

@@ -13,6 +13,7 @@ import pl.stojecki.bankingmanagementsystem.user.model.PasswordResetToken;
 import pl.stojecki.bankingmanagementsystem.user.model.User;
 import pl.stojecki.bankingmanagementsystem.user.repository.PasswordResetTokenRepository;
 import pl.stojecki.bankingmanagementsystem.user.repository.UserRepository;
+import pl.stojecki.bankingmanagementsystem.user.security.JwtUtils;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -25,6 +26,9 @@ public class PasswordResetTokenService {
     private final UserRepository userRepository;
     private final MailService mailService;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtils jwtUtils;
+
+
 
 
     @Transactional
@@ -44,7 +48,7 @@ public class PasswordResetTokenService {
         PasswordResetToken passwordResetToken = new PasswordResetToken();
         passwordResetToken.setToken(token);
         passwordResetToken.setUser(user);
-        passwordResetToken.setCreatedDate(Instant.now().plusSeconds(86400));
+        passwordResetToken.setCreatedDate(Instant.now().plusSeconds(jwtUtils.getPasswordResetExpirationSec()));
         passwordResetTokenRepository.save(passwordResetToken);
         return token;
     }
