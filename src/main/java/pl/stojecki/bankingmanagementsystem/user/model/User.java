@@ -8,12 +8,14 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import pl.stojecki.bankingmanagementsystem.bank.model.BankAccount;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Set;
 
 
 @Entity
@@ -46,6 +48,8 @@ public class User implements UserDetails {
 
     @OneToOne
     private Address address;
+    @OneToMany(mappedBy = "user")
+    private Set<BankAccount> bankAccount;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
