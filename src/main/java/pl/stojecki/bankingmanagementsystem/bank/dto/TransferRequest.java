@@ -1,0 +1,19 @@
+package pl.stojecki.bankingmanagementsystem.bank.dto;
+
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class TransferRequest {
+
+    private String sourceBankAccount;
+    private String targetAccount;
+    private String title;
+    private BigDecimal value;
+}
