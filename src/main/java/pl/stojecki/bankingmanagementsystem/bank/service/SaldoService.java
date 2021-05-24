@@ -29,6 +29,18 @@ public class SaldoService {
                 orElseThrow(() -> new NotFoundException("Account not found")));
         saldoRepository.save(saldo);
     }
+
+    public void addPayment(@NotNull PaymentRequest paymentRequest) throws NotFoundException {
+        BankAccount bankAccount = bankAccountRepository.findByNumber(paymentRequest.getAccountNumber())
+                .orElseThrow(() -> new NotFoundException("Account not found"));
+
+        Saldo saldo = bankAccount.getSaldo().stream()
+                .findFirst()
+                .get();
+
+        saldo.setValue(saldo.getValue().add(paymentRequest.getValue()));
+        saldoRepository.save(saldo);
+    }
     public Saldo getRecipientSaldo(BankAccount recipientSaldo) throws NotFoundException {
         return recipientSaldo.getSaldo().stream()
                 .filter(saldo -> saldo.getBankAccount().equals(recipientSaldo))
