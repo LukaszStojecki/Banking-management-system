@@ -1,19 +1,18 @@
 package pl.stojecki.bankingmanagementsystem.user.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import pl.stojecki.bankingmanagementsystem.bank.model.BankAccount;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Set;
 
 
 @Entity
@@ -22,6 +21,7 @@ import java.util.Collections;
 @AllArgsConstructor
 @Builder
 @Table(name = "users")
+@EqualsAndHashCode(exclude = {"address", "bankAccount"})
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,8 +44,10 @@ public class User implements UserDetails {
     @Enumerated(value = EnumType.STRING)
     private Role roles;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Address address;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<BankAccount> bankAccount;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

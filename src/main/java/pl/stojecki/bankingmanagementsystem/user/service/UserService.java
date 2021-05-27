@@ -9,10 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.stojecki.bankingmanagementsystem.exception.BadRequestException;
-import pl.stojecki.bankingmanagementsystem.exception.ConflictException;
-import pl.stojecki.bankingmanagementsystem.exception.EmailException;
-import pl.stojecki.bankingmanagementsystem.exception.NotFoundException;
+import pl.stojecki.bankingmanagementsystem.exception.*;
 import pl.stojecki.bankingmanagementsystem.user.dto.*;
 import pl.stojecki.bankingmanagementsystem.user.model.*;
 import pl.stojecki.bankingmanagementsystem.user.repository.AddressRepository;
@@ -206,4 +203,14 @@ public class UserService {
        refreshTokenRepository.deleteByUser(userRepository.findById(userId)
                .orElseThrow(() -> new NotFoundException("User of " + userId + " not found")));
    }
+
+    @Transactional
+    public User getCurrentUser() throws UnauthorizedException {
+        try {
+           User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            return userRepository.findByIdentificationNumber(user.getUsername()).get();
+        } catch (Exception e) {
+            throw new UnauthorizedException("You are not authenticated");
+        }
+    }
 }
