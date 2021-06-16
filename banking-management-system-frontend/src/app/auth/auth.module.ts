@@ -18,10 +18,11 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ToastrModule} from "ngx-toastr";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatIconModule} from "@angular/material/icon";
+import {ReminderComponent} from "./components/reminder/reminder.component";
 
 
 @NgModule({
-  declarations: [LoginComponent, TrackCapsDirective, ResetPasswordComponent],
+  declarations: [LoginComponent, TrackCapsDirective, ResetPasswordComponent, ReminderComponent],
   imports: [
     CommonModule,
     AuthRoutingModule,
@@ -42,7 +43,8 @@ import {MatIconModule} from "@angular/material/icon";
   ],
   exports: [
     LoginComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    ReminderComponent
   ]
 
 })

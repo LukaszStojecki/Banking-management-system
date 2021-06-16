@@ -13,6 +13,7 @@ export class UserService {
 
   angularHost = 'http://localhost:8080/api/auth';
   resetPasswordUrl = "http://localhost:4200/reset-password/";
+  reminderUrl = "http://localhost:4200/reminder-number/";
 
   refreshTokenPayload = {
     refreshToken: this.getRefreshToken(),
@@ -65,5 +66,13 @@ export class UserService {
     });
     let options = {headers: headers}
     return this.httpClient.get(this.angularHost + '/resetPassword?email=' + email,options);
+  }
+
+  reminderIdentificationNumber(email: string){
+    let headers = new HttpHeaders({
+      reminderUrl: this.reminderUrl
+    });
+    let options = {headers: headers}
+    return this.httpClient.get(this.angularHost + '/remindIdentificationNumber?email=' + email,options);
   }
 }
