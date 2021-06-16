@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 
 import {AuthRoutingModule} from './auth-routing.module';
 import {LoginComponent, TrackCapsDirective} from './components/login/login.component';
+import {ResetPasswordComponent} from './components/reset-password/reset-password.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatCardModule} from "@angular/material/card";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -20,7 +21,7 @@ import {MatIconModule} from "@angular/material/icon";
 
 
 @NgModule({
-  declarations: [LoginComponent, TrackCapsDirective],
+  declarations: [LoginComponent, TrackCapsDirective, ResetPasswordComponent],
   imports: [
     CommonModule,
     AuthRoutingModule,
@@ -40,7 +41,8 @@ import {MatIconModule} from "@angular/material/icon";
     MatIconModule
   ],
   exports: [
-    LoginComponent
+    LoginComponent,
+    ResetPasswordComponent
   ]
 
 })

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {LocalStorageService} from "ngx-webstorage";
 import {LoginRequest} from "../components/login/login.request";
 import {Observable} from "rxjs";
@@ -12,6 +12,7 @@ import {map, tap} from "rxjs/operators";
 export class UserService {
 
   angularHost = 'http://localhost:8080/api/auth';
+  resetPasswordUrl = "http://localhost:4200/reset-password/";
 
   refreshTokenPayload = {
     refreshToken: this.getRefreshToken(),
@@ -56,5 +57,13 @@ export class UserService {
 
       return true;
     }));
+  }
+
+  forgotPassword(email: string){
+    let headers = new HttpHeaders({
+      resetPasswordUrl: this.resetPasswordUrl
+    });
+    let options = {headers: headers}
+    return this.httpClient.get(this.angularHost + '/resetPassword?email=' + email,options);
   }
 }
