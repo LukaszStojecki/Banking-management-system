@@ -1,0 +1,19 @@
+h1 {
+  color: white;
+  font-size: 28px;
+  line-height: 8px;
+  font-weight: bold;
+  padding: 0 0 10px 0 !important;
+  float: none;
+}
+
+ul li {
+  list-style: none;
+}
+
+.header-left{
+  color: white;
+  font-size: 28px;
+}
+
+

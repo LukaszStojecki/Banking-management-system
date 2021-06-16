@@ -1,0 +1,56 @@
+<div class="loginPanel">
+  <h1>
+    Logowanie
+  </h1>
+  <div class="logowanie" fxLayoutAlign="center">
+    <mat-card *ngIf="!isRequestSend">
+      <form class="form" fxLayout="column" [formGroup]="loginForm" (ngSubmit)="login()">
+        <mat-label for="input_nik" id="nillable">
+            <span class="login-step-instruction">
+            <strong>Wpisz login</strong>
+            <span style="margin-left: 5px">
+               <a href="" matTooltipPosition="right" matTooltip="Podaj NIK.
+              NIK to Twój identyfikator.">
+          <img class="tooltip-image" src="/assets/info.png">
+        </a>
+            </span>
+          </span>
+        </mat-label>
+        <mat-form-field class="form-field" appearance="standard">
+          <input matInput type="text" id="input_nik" formControlName="identificationNumber"
+                 (capsLock)="capsOn=$event">
+          <mat-error *ngIf="!loginForm.get('identificationNumber').valid &&
+           loginForm.get('identificationNumber').touched">Pole jest wymagane
+          </mat-error>
+        </mat-form-field>
+        <mat-label for="input_nik" id="nillable2">
+          <span class="login-step-instruction">
+            <strong>Wpisz hasło</strong>
+          </span>
+        </mat-label>
+        <mat-form-field class="form-field">
+          <input matInput type="password" id="input_password" formControlName="password">
+          <mat-error *ngIf="!loginForm.get('password').valid &&
+           loginForm.get('password').touched">Pole jest wymagane
+          </mat-error>
+        </mat-form-field>
+        <span class="capslock-warning" *ngIf="capsOn">Klawisz Caps Lock jest włączony</span>
+        <button class="button-next" [disabled]="loginForm.invalid" color="primary" mat-raised-button type="submit">
+          Zaloguj
+        </button>
+      </form>
+      <div id="reset-password-link">
+        <span>Nie pamiętasz hasła? </span>
+        <span><a routerLink="/reset-password" routerLinkActive="active">Zresetuj swoje hasło</a></span>
+      </div>
+      <div id="reminder-number-id">
+        <span>Nie pamiętasz loginu? </span>
+        <span> <a routerLink="/reminder-number" routerLinkActive="active">Wyślij przyomnienie</a></span>
+      </div>
+    </mat-card>
+  </div>
+  <mat-card *ngIf="isRequestSend">
+    <mat-progress-spinner class="mx-auto"></mat-progress-spinner>
+    <h4 class="mt-3"><i>Trwa przetwarzanie żądania...</i></h4>
+  </mat-card>
+</div>
