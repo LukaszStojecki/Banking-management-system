@@ -4,6 +4,7 @@ import {LoginRequest} from "./login.request";
 import {UserService} from "../../service/user.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {ToastrService} from "ngx-toastr";
 
 
 @Component({
@@ -30,11 +31,19 @@ export class LoginComponent implements OnInit {
     };
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.loginForm = this.formBuilder.group({
       identificationNumber: ['', [ Validators.required]],
       password: ['', [ Validators.required]]
     });
+    this.activatedRoute.queryParams
+      .subscribe(params => {
+        if (params.registered !== undefined && params.registered === 'true') {
+          this.snackBar.open('Dziękuję za rejestrację!. Proszę sprawdzić skrzynkę dbiorczą ' +
+            'w celu otrzymania linku aktywacyjnego.' + 'Aktywuj swoje konto zanim się zalogujesz!','',
+            {duration:6000, panelClass:'green-snackbar',verticalPosition:"top",horizontalPosition:"center"})
+        }
+      });
   }
 
   login() {
@@ -46,13 +55,17 @@ export class LoginComponent implements OnInit {
       this.isRequestSend = false;
       this.isError = false;
       console.log("login success")
-      this.router.navigateByUrl('');
-      this.snackBar.open('Zalogowano. Za chwilę nastąpi przekierowanie',
+      this.router.navigate(['/register']).then(() =>{
+        console.log("successfully navigating to the register view")}).catch((reason => {
+          console.log("failed navigating to the register view")
+      }));
+
+      this.snackBar.open('Zalogowano. Za chwilę nastąpi przekierowanie...',
         '',{duration:6000, panelClass:'green-snackbar',verticalPosition:"top",horizontalPosition:"center"})
     }, error => {
       this.isError = true;
       this.isRequestSend = false;
-      console.log("błąd logowania")
+      console.log("login error")
       this.snackBar.open('Niepoprawny identyfikator lub hasło',
         '', {duration: 6000, panelClass: 'red-snackbar',verticalPosition:"top",horizontalPosition:"center"});
     });

@@ -3,7 +3,6 @@ import {CommonModule} from '@angular/common';
 
 import {SharedRoutingModule} from './shared-routing.module';
 import {SharedComponent} from "./shared.component";
-import {HomeComponent} from "./home/home.component";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {MatCardModule} from "@angular/material/card";
@@ -15,15 +14,15 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AuthModule} from "../auth/auth.module";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatMenuModule} from "@angular/material/menu";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {ToastrModule} from "ngx-toastr";
+import {NgxWebstorageModule} from "ngx-webstorage";
+import {NgxMaskModule} from "ngx-mask";
 
 
 @NgModule({
   declarations: [
-    SharedComponent,
-    HomeComponent
-  ],
-  exports: [
-    HomeComponent
+    SharedComponent
   ],
   imports: [
     CommonModule,
@@ -39,7 +38,11 @@ import {MatMenuModule} from "@angular/material/menu";
     ReactiveFormsModule,
     AuthModule,
     MatSnackBarModule,
-    MatMenuModule
+    MatMenuModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
+    NgxWebstorageModule.forRoot(),
+    NgxMaskModule.forRoot()
   ]
 })
 export class SharedModule { }

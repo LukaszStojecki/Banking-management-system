@@ -19,10 +19,15 @@ import {ToastrModule} from "ngx-toastr";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatIconModule} from "@angular/material/icon";
 import {ReminderComponent} from "./components/reminder/reminder.component";
+import {RegisterComponent} from "./components/register/register.component";
+import {MatExpansionModule} from "@angular/material/expansion";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule} from "@angular/material/core";
+import {NgxMaskModule} from "ngx-mask";
 
 
 @NgModule({
-  declarations: [LoginComponent, TrackCapsDirective, ResetPasswordComponent, ReminderComponent],
+  declarations: [LoginComponent, TrackCapsDirective, ResetPasswordComponent, ReminderComponent, RegisterComponent],
   imports: [
     CommonModule,
     AuthRoutingModule,
@@ -39,12 +44,17 @@ import {ReminderComponent} from "./components/reminder/reminder.component";
     ToastrModule.forRoot(),
     BrowserAnimationsModule,
     MatMenuModule,
-    MatIconModule
+    MatIconModule,
+    MatExpansionModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    NgxMaskModule.forRoot()
   ],
   exports: [
-    LoginComponent,
     ResetPasswordComponent,
-    ReminderComponent
+    ReminderComponent,
+    RegisterComponent,
+    LoginComponent
   ]
 
 })

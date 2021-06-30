@@ -5,6 +5,7 @@ import {LoginRequest} from "../components/login/login.request";
 import {Observable} from "rxjs";
 import {LoginResponse} from "../components/login/login.response";
 import {map, tap} from "rxjs/operators";
+import {RegisterRequest} from "../components/register/register.request";
 
 @Injectable({
   providedIn: 'root'
@@ -74,5 +75,9 @@ export class UserService {
     });
     let options = {headers: headers}
     return this.httpClient.get(this.angularHost + '/remindIdentificationNumber?email=' + email,options);
+  }
+
+  signup(registerRequest: RegisterRequest): Observable<any>{
+    return this.httpClient.post(this.angularHost + '/signup', registerRequest,{ responseType: 'text'});
   }
 }

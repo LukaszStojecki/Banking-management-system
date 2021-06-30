@@ -1,0 +1,19 @@
+h1 {
+  color: #444;
+  font-size: 28px;
+  line-height: 38px;
+  font-weight: bold;
+  padding: 0 0 10px 0 !important;
+  margin-bottom: 10px;
+  float: none;
+}
+
+button {
+  display: block;
+  background: red;
+  border: 1px solid;
+  cursor: pointer;
+}
+
+
+

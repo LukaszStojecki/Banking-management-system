@@ -22,6 +22,8 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {SharedModule} from "./shared/shared.module";
 import {MatIconModule} from "@angular/material/icon";
 import {MatMenuModule} from "@angular/material/menu";
+import {MatExpansionModule} from "@angular/material/expansion";
+import {NgxMaskModule} from "ngx-mask";
 
 @NgModule({
   declarations: [
@@ -32,7 +34,6 @@ import {MatMenuModule} from "@angular/material/menu";
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule,
     MatTooltipModule,
     FlexLayoutModule,
     MatCardModule,
@@ -49,9 +50,12 @@ import {MatMenuModule} from "@angular/material/menu";
     MatSnackBarModule,
     SharedModule,
     MatIconModule,
-    MatMenuModule
+    MatMenuModule,
+    MatExpansionModule,
+    NgxMaskModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {
+}
