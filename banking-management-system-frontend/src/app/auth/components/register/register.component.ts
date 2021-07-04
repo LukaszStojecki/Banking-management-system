@@ -70,8 +70,8 @@ export class RegisterComponent implements OnInit {
       console.log("register success")
       this.router.navigate(['/login'],
               { queryParams: { registered: 'true' } }).then(() =>{
-        console.log("successfully navigating to the register view")}).catch((reason => {
-        console.log("failed navigating to the register view")
+        console.log("successfully navigating to the login view")}).catch((reason => {
+        console.log("failed navigating to the login view")
       }));
     }, error => {
       this.isError = true;

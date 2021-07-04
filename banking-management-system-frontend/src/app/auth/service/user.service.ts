@@ -62,19 +62,11 @@ export class UserService {
   }
 
   forgotPassword(email: string){
-    let headers = new HttpHeaders({
-      resetPasswordUrl: this.resetPasswordUrl
-    });
-    let options = {headers: headers}
-    return this.httpClient.get(this.angularHost + '/resetPassword?email=' + email,options);
+    return this.httpClient.get(this.angularHost + '/resetPassword?email=' + email);
   }
 
   reminderIdentificationNumber(email: string){
-    let headers = new HttpHeaders({
-      reminderUrl: this.reminderUrl
-    });
-    let options = {headers: headers}
-    return this.httpClient.get(this.angularHost + '/remindIdentificationNumber?email=' + email,options);
+    return this.httpClient.get(this.angularHost + '/remindIdentificationNumber?email=' + email);
   }
 
   signup(registerRequest: RegisterRequest): Observable<any>{
