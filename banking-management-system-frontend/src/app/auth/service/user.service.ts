@@ -80,4 +80,8 @@ export class UserService {
   signup(registerRequest: RegisterRequest): Observable<any>{
     return this.httpClient.post(this.angularHost + '/signup', registerRequest,{ responseType: 'text'});
   }
+
+  confirmRegistration(token:string): Observable<any>{
+    return this.httpClient.get(this.angularHost +'/verification?token=' + token,{ responseType: 'text'})
+  }
 }

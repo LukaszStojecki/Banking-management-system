@@ -56,7 +56,7 @@ public class UserService {
 
         mailService.sendRegisterEmail(new NotificationEmail("Please activate your account", ""
                 + user.getEmail(), "Please click the link below to activate your account " + "\n" + "\n" +
-                "http:localhost:8080/auth/accountVerification/" + token + "\n" + "\n" +
+                "http://localhost:4200/registration-verify?token=" + token + "\n" + "\n" +
                 " Your identification number is: " + identifier
                 + "\n" + "\n" + "We are informing you that the above link will expire 24 hours after being sent."));
     }

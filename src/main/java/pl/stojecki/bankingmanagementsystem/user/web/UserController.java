@@ -2,6 +2,7 @@ package pl.stojecki.bankingmanagementsystem.user.web;
 
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,7 @@ import pl.stojecki.bankingmanagementsystem.user.service.UserService;
 
 import javax.validation.Valid;
 
-
+@Slf4j
 @RestController
 @RequestMapping("api/auth")
 @AllArgsConstructor
@@ -27,8 +28,9 @@ public class UserController {
         return new ResponseEntity<>("User Registration successful", HttpStatus.OK);
     }
 
-    @GetMapping("/verification/{token}")
-    public ResponseEntity<String> verifyAccount(@PathVariable String token) throws NotFoundException {
+    @GetMapping("/verification")
+    public ResponseEntity<String> verifyAccount(@RequestParam String token) throws NotFoundException {
+        log.info("confirm registration");
         userService.verifyAccount(token);
         return new ResponseEntity<>("Account activated successfully", HttpStatus.OK);
     }

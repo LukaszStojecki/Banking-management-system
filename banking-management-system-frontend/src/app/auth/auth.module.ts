@@ -24,10 +24,11 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
 import {NgxMaskModule} from "ngx-mask";
+import { RegistrationVerifyComponent } from './components/registration-verify/registration-verify.component';
 
 
 @NgModule({
-  declarations: [LoginComponent, TrackCapsDirective, ResetPasswordComponent, ReminderComponent, RegisterComponent],
+  declarations: [LoginComponent, TrackCapsDirective, ResetPasswordComponent, ReminderComponent, RegisterComponent, RegistrationVerifyComponent],
   imports: [
     CommonModule,
     AuthRoutingModule,
@@ -54,7 +55,8 @@ import {NgxMaskModule} from "ngx-mask";
     ResetPasswordComponent,
     ReminderComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    RegistrationVerifyComponent
   ]
 
 })

@@ -4,7 +4,6 @@ import {LoginRequest} from "./login.request";
 import {UserService} from "../../service/user.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {ToastrService} from "ngx-toastr";
 
 
 @Component({
@@ -39,7 +38,7 @@ export class LoginComponent implements OnInit {
     this.activatedRoute.queryParams
       .subscribe(params => {
         if (params.registered !== undefined && params.registered === 'true') {
-          this.snackBar.open('Dziękuję za rejestrację!. Proszę sprawdzić skrzynkę dbiorczą ' +
+          this.snackBar.open('Dziękuję za rejestrację!. Proszę sprawdzić skrzynkę odbiorczą ' +
             'w celu otrzymania linku aktywacyjnego.' + 'Aktywuj swoje konto zanim się zalogujesz!','',
             {duration:6000, panelClass:'green-snackbar',verticalPosition:"top",horizontalPosition:"center"})
         }
