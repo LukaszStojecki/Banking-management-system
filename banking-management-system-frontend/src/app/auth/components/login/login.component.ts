@@ -43,6 +43,14 @@ export class LoginComponent implements OnInit {
             {duration:6000, panelClass:'green-snackbar',verticalPosition:"top",horizontalPosition:"center"})
         }
       });
+    this.activatedRoute.queryParams
+      .subscribe(params => {
+        if (params.changed !== undefined && params.changed === 'true') {
+          this.snackBar.open('Twoje hasło zostało zmienione ' +
+            'Teraz możesz się zalogować','',
+            {duration:6000, panelClass:'green-snackbar',verticalPosition:"top",horizontalPosition:"center"})
+        }
+      });
   }
 
   login() {

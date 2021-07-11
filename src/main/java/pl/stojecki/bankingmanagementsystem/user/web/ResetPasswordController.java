@@ -23,9 +23,9 @@ public class ResetPasswordController {
         return new ResponseEntity<>("Password reset email successfully sent", HttpStatus.OK);
     }
 
-    @PutMapping("/resetPassword/{token}")
+    @PutMapping("/resetPassword")
     public ResponseEntity<String> resetPassword(@RequestBody PasswordResetTokenRequest passwordResetTokenRequest,
-                                                @PathVariable(name = "token") String token) throws NotFoundException {
+                                                @RequestParam(name = "token") String token) throws NotFoundException {
         passwordResetTokenService.resetPasswordToken(passwordResetTokenRequest, token);
 
         return new ResponseEntity<>("Password reset successfully", HttpStatus.OK);

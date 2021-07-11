@@ -6,6 +6,7 @@ import {Observable} from "rxjs";
 import {LoginResponse} from "../components/login/login.response";
 import {map, tap} from "rxjs/operators";
 import {RegisterRequest} from "../components/register/register.request";
+import {PasswordResetTokenRequest} from "../components/change-password/PasswordResetTokenRequest";
 
 @Injectable({
   providedIn: 'root'
@@ -75,5 +76,9 @@ export class UserService {
 
   confirmRegistration(token:string): Observable<any>{
     return this.httpClient.get(this.angularHost +'/verification?token=' + token,{ responseType: 'text'})
+  }
+
+  changePassword(token:string, passwordResetTokenRequest: PasswordResetTokenRequest):Observable<any>{
+    return this.httpClient.put(this.angularHost + '/resetPassword?token=' + token,passwordResetTokenRequest,{ responseType: 'text'})
   }
 }

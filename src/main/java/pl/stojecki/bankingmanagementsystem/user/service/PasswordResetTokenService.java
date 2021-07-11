@@ -39,7 +39,7 @@ public class PasswordResetTokenService {
 
         mailService.sendRegisterEmail(new NotificationEmail("Banking system password reset",
                 user.getEmail(), "Please click the link below to reset your password " + "\n" + "\n" +
-                "http://localhost:8080/api/auth/resetPassword/" + passwordResetToken
+                "http://localhost:4200/change-password?token=" + passwordResetToken
                 + "\n" + "\n" + "We are informing you that the above link will expire 24 hours after being sent."));
     }
 
