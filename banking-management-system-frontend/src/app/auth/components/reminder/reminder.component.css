@@ -1,4 +1,4 @@
-mat-card {
+.mat-card {
   max-width: 400px;
   margin: 2em auto;
   text-align: center;
@@ -9,9 +9,13 @@ mat-form-field {
   padding: 0 5px;
   box-sizing: border-box;
 }
-.reminder-button{
-  position: relative;
-  margin-top: 30px;
-  background: red;
-  border: 1px solid;
+
+h1 {
+  color: white;
+  font-size: 28px;
+  line-height: 38px;
+  font-weight: bold;
+  padding: 0 0 10px 0 !important;
+  margin-bottom: 10px;
+  float: none;
 }
