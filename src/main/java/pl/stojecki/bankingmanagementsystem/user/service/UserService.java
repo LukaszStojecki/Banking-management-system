@@ -198,11 +198,9 @@ public class UserService {
                 .build();
     }
 
-   @Transactional
-    public void deleteByUserId(Long userId) throws NotFoundException {
-       refreshTokenRepository.deleteByUser(userRepository.findById(userId)
-               .orElseThrow(() -> new NotFoundException("User of " + userId + " not found")));
-   }
+    public void logout(RefreshTokenRequest refreshTokenRequest) {
+        refreshTokenService.deleteRefreshToken(refreshTokenRequest.getRefreshToken());
+    }
 
     @Transactional
     public User getCurrentUser() throws UnauthorizedException {

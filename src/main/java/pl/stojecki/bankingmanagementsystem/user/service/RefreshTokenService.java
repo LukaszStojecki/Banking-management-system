@@ -9,6 +9,7 @@ import pl.stojecki.bankingmanagementsystem.user.model.User;
 import pl.stojecki.bankingmanagementsystem.user.repository.RefreshTokenRepository;
 import pl.stojecki.bankingmanagementsystem.user.security.JwtUtils;
 
+import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
@@ -43,6 +44,10 @@ public class RefreshTokenService {
         if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
             throw new TokenRefreshException(token.getToken(), "Expired token. Please issue a new request");
         }
+    }
+    @Transactional
+    public void deleteRefreshToken(String token) {
+        refreshTokenRepository.deleteByToken(token);
     }
 
 }

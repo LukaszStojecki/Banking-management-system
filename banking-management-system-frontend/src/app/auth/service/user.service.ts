@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
+import {EventEmitter, Injectable, Output} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {LocalStorageService} from "ngx-webstorage";
 import {LoginRequest} from "../components/login/login.request";
-import {Observable} from "rxjs";
+import {Observable, throwError} from "rxjs";
 import {LoginResponse} from "../components/login/login.response";
 import {map, tap} from "rxjs/operators";
 import {RegisterRequest} from "../components/register/register.request";
@@ -14,8 +14,9 @@ import {PasswordResetTokenRequest} from "../components/change-password/PasswordR
 export class UserService {
 
   angularHost = 'http://localhost:8080/api/auth';
-  resetPasswordUrl = "http://localhost:4200/reset-password/";
-  reminderUrl = "http://localhost:4200/reminder-number/";
+
+  @Output() loggedIn: EventEmitter<boolean> = new EventEmitter();
+  @Output() identificationNumber: EventEmitter<string> = new EventEmitter();
 
   refreshTokenPayload = {
     refreshToken: this.getRefreshToken(),
@@ -58,6 +59,9 @@ export class UserService {
       this.localStorage.store('refreshToken', data.refreshToken);
       this.localStorage.store('expiresAt', data.expiresAt);
 
+      this.loggedIn.emit(true);
+      this.identificationNumber.emit(data.identificationNumber);
+
       return true;
     }));
   }
@@ -80,5 +84,24 @@ export class UserService {
 
   changePassword(token:string, passwordResetTokenRequest: PasswordResetTokenRequest):Observable<any>{
     return this.httpClient.put(this.angularHost + '/resetPassword?token=' + token,passwordResetTokenRequest,{ responseType: 'text'})
+  }
+
+  isLoggedIn(): boolean {
+    return this.getJwtToken() != null;
+  }
+
+
+  logout() {
+    this.httpClient.post('http://localhost:8080/api/auth/logout', this.refreshTokenPayload,
+      { responseType: 'text' })
+      .subscribe(data => {
+        console.log(data);
+      }, error => {
+        throwError(error);
+      })
+    this.localStorage.clear('authenticationToken');
+    this.localStorage.clear('identificationNumber');
+    this.localStorage.clear('refreshToken');
+    this.localStorage.clear('expiresAt');
   }
 }

@@ -15,16 +15,16 @@
         </button>
       </li>
       <li>
-        <button mat-icon-button>
+        <button mat-icon-button >
           <mat-icon routerLink="/register" routerLinkActive="active">how_to_reg</mat-icon>
         </button>
       </li>
       <li>
-        <button mat-button [matMenuTriggerFor]="menu">
+        <button mat-button [matMenuTriggerFor]="menu" *ngIf="isLoggedIn">
           <mat-icon>person_outline</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item>
+          <button mat-menu-item (click)="logout()" >
             <mat-icon>exit_to_app</mat-icon>
             Wyloguj
           </button>
