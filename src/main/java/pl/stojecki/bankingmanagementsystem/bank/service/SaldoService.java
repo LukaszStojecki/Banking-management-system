@@ -41,6 +41,7 @@ public class SaldoService {
         saldo.setValue(saldo.getValue().add(paymentRequest.getValue()));
         saldoRepository.save(saldo);
     }
+
     public Saldo getRecipientSaldo(BankAccount recipientSaldo) throws NotFoundException {
         return recipientSaldo.getSaldo().stream()
                 .filter(saldo -> saldo.getBankAccount().equals(recipientSaldo))

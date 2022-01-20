@@ -9,6 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BankAccountRequest {
 
-    private String accountType;
-
+    private String bankAccountType;
 }

@@ -29,8 +29,6 @@ public class PasswordResetTokenService {
     private final JwtUtils jwtUtils;
 
 
-
-
     @Transactional
     public void sendResetPasswordEmail(String email) throws NotFoundException, EmailException {
         User user = userRepository.findByEmail(email)

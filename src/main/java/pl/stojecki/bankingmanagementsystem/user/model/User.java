@@ -28,7 +28,7 @@ public class User implements UserDetails {
     private Long id;
 
     @NotBlank(message = "Identification number is required")
-    @Length(min = 8,max = 8)
+    @Length(min = 8, max = 8)
     private String identificationNumber;
     @NotBlank(message = "Password is required")
     private String password;

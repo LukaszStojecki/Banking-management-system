@@ -1,8 +1,7 @@
-
 ## Banking management system
 
-
 ## Table of contents
+
 * [General info](#general-info)
 * [Screenshots](#screenshots)
 * [Technologies](#technologies)
@@ -24,7 +23,9 @@ Application used to manage a bank account.
 ## Features
 
 ## Status
+
 Project is: in progress
 
 ## Contact
+
 lukasz.stojecki@o2.pl - feel free to contact me!

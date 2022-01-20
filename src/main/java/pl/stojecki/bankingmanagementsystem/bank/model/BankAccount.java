@@ -1,5 +1,6 @@
 package pl.stojecki.bankingmanagementsystem.bank.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import pl.stojecki.bankingmanagementsystem.user.model.User;
@@ -13,15 +14,15 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @Data
-@EqualsAndHashCode(exclude = {"saldo","recipientTransfer","sourceTransfer"})
+@EqualsAndHashCode(exclude = {"saldo", "recipientTransfer", "sourceTransfer"})
 public class BankAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Length(min = 26,max = 26)
+    @Length(min = 26, max = 26)
     private String number;
-    @OneToMany(mappedBy = "bankAccount",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "bankAccount", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Saldo> saldo;
     @Enumerated(value = EnumType.STRING)
     private BankAccountType bankAccountType;

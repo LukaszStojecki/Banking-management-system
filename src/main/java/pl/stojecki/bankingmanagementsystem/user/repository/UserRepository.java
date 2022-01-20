@@ -7,12 +7,16 @@ import pl.stojecki.bankingmanagementsystem.user.model.User;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User,Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByIdentificationNumber(String identificationNumber);
+
     boolean existsByIdentificationNumber(String identificationNumber);
+
     boolean existsByEmail(String email);
+
     boolean existsByAddress_PhoneNumber(String number);
+
     Optional<User> findByEmail(String email);
 
 }

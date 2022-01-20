@@ -182,7 +182,7 @@ public class UserService {
         User user = userRepository.findByIdentificationNumber(refreshTokenRequest.getIdentificationNumber())
                 .orElseThrow(() -> new NotFoundException("User not found"));
         RefreshToken refreshToken = refreshTokenService.findByToken(refreshTokenRequest.getRefreshToken())
-                .orElseThrow(()->new NotFoundException("Refresh token not found"));
+                .orElseThrow(() -> new NotFoundException("Refresh token not found"));
 
         Role userRole = user.getRoles();
         String identificationNumber = user.getIdentificationNumber();
@@ -207,7 +207,7 @@ public class UserService {
     @Transactional
     public User getCurrentUser() throws UnauthorizedException {
         try {
-           User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             return userRepository.findByIdentificationNumber(user.getUsername()).get();
         } catch (Exception e) {
             throw new UnauthorizedException("You are not authenticated");

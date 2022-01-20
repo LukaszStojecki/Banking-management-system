@@ -6,7 +6,7 @@ import pl.stojecki.bankingmanagementsystem.user.model.Address;
 import pl.stojecki.bankingmanagementsystem.user.model.User;
 
 @Repository
-public interface AddressRepository extends JpaRepository<Address,Long> {
+public interface AddressRepository extends JpaRepository<Address, Long> {
 
     Address findByUser(User user);
 
