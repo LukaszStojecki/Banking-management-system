@@ -7,7 +7,6 @@ import {LoginResponse} from "../components/login/login.response";
 import {map, tap} from "rxjs/operators";
 import {RegisterRequest} from "../components/register/register.request";
 import {PasswordResetTokenRequest} from "../components/change-password/PasswordResetTokenRequest";
-
 @Injectable({
   providedIn: 'root'
 })
@@ -17,6 +16,8 @@ export class UserService {
 
   @Output() loggedIn: EventEmitter<boolean> = new EventEmitter();
   @Output() identificationNumber: EventEmitter<string> = new EventEmitter();
+  @Output() role: EventEmitter<string> = new EventEmitter();
+  userRole: string;
 
   refreshTokenPayload = {
     refreshToken: this.getRefreshToken(),
@@ -24,18 +25,24 @@ export class UserService {
   }
 
   constructor(private httpClient: HttpClient,
-              private localStorage: LocalStorageService) { }
+              private localStorage: LocalStorageService) {
+  }
 
 
   getRefreshToken() {
     return this.localStorage.retrieve('refreshToken');
   }
+
   getJwtToken() {
     return this.localStorage.retrieve('authenticationToken');
   }
 
-  getIdentificationNumber(){
+  getIdentificationNumber() {
     return this.localStorage.retrieve("identificationNumber")
+  }
+
+  getRole() {
+    return this.userRole;
   }
 
   refreshToken() {
@@ -43,11 +50,11 @@ export class UserService {
       this.refreshTokenPayload)
       .pipe(tap(response => {
         this.localStorage.clear('authenticationToken');
-        this.localStorage.clear('expiresAt');
+        this.localStorage.clear('expiryDuration');
 
         this.localStorage.store('authenticationToken',
           response.authenticationToken);
-        this.localStorage.store('expiresAt', response.expiresAt);
+        this.localStorage.store('expiryDuration', response.expiryDuration);
       }));
   }
 
@@ -57,7 +64,7 @@ export class UserService {
       this.localStorage.store('authenticationToken', data.authenticationToken);
       this.localStorage.store('identificationNumber', data.identificationNumber);
       this.localStorage.store('refreshToken', data.refreshToken);
-      this.localStorage.store('expiresAt', data.expiresAt);
+      this.localStorage.store('expiryDuration', data.expiryDuration);
 
       this.loggedIn.emit(true);
       this.identificationNumber.emit(data.identificationNumber);
@@ -66,24 +73,24 @@ export class UserService {
     }));
   }
 
-  forgotPassword(email: string){
+  forgotPassword(email: string) {
     return this.httpClient.get(this.angularHost + '/resetPassword?email=' + email);
   }
 
-  reminderIdentificationNumber(email: string){
+  reminderIdentificationNumber(email: string) {
     return this.httpClient.get(this.angularHost + '/remindIdentificationNumber?email=' + email);
   }
 
-  signup(registerRequest: RegisterRequest): Observable<any>{
-    return this.httpClient.post(this.angularHost + '/signup', registerRequest,{ responseType: 'text'});
+  signup(registerRequest: RegisterRequest): Observable<any> {
+    return this.httpClient.post(this.angularHost + '/signup', registerRequest, {responseType: 'text'});
   }
 
-  confirmRegistration(token:string): Observable<any>{
-    return this.httpClient.get(this.angularHost +'/verification?token=' + token,{ responseType: 'text'})
+  confirmRegistration(token: string): Observable<any> {
+    return this.httpClient.get(this.angularHost + '/verification?token=' + token, {responseType: 'text'})
   }
 
-  changePassword(token:string, passwordResetTokenRequest: PasswordResetTokenRequest):Observable<any>{
-    return this.httpClient.put(this.angularHost + '/resetPassword?token=' + token,passwordResetTokenRequest,{ responseType: 'text'})
+  changePassword(token: string, passwordResetTokenRequest: PasswordResetTokenRequest): Observable<any> {
+    return this.httpClient.put(this.angularHost + '/resetPassword?token=' + token, passwordResetTokenRequest, {responseType: 'text'})
   }
 
   isLoggedIn(): boolean {
@@ -93,7 +100,7 @@ export class UserService {
 
   logout() {
     this.httpClient.post('http://localhost:8080/api/auth/logout', this.refreshTokenPayload,
-      { responseType: 'text' })
+      {responseType: 'text'})
       .subscribe(data => {
         console.log(data);
       }, error => {
@@ -102,6 +109,7 @@ export class UserService {
     this.localStorage.clear('authenticationToken');
     this.localStorage.clear('identificationNumber');
     this.localStorage.clear('refreshToken');
-    this.localStorage.clear('expiresAt');
+    this.localStorage.clear('expiryDuration');
   }
+
 }

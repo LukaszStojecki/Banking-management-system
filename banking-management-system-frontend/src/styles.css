@@ -4,15 +4,18 @@ header {
   color: #bab9b9;
 
 }
-footer{
+
+footer {
   padding-top: 25px;
   padding-bottom: 25px;
   background: #262930;
   color: #bab9b9;
 }
+
 * {
   box-sizing: border-box;
 }
+
 body {
   height: 100vh;
   font-family: 'Baloo Tamma 2', cursive;
@@ -43,17 +46,17 @@ main {
   background: url("assets/main.jpg");
 }
 
-.green-snackbar{
+.green-snackbar {
   color: white;
   background-color: #27D20D;
 }
 
-.blue-snackbar{
+.blue-snackbar {
   color: white;
   background-color: #0062CC;
 }
 
-.red-snackbar{
+.red-snackbar {
   color: white;
   background-color: #ff002f;
 }

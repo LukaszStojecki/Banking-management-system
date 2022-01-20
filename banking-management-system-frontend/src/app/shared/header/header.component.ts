@@ -12,7 +12,8 @@ export class HeaderComponent implements OnInit {
   isLoggedIn: boolean;
   identificationNumber: string;
 
-  constructor(private userService: UserService, private router: Router) { }
+  constructor(private userService: UserService, private router: Router) {
+  }
 
   ngOnInit(): void {
     this.userService.loggedIn.subscribe((data: boolean) => this.isLoggedIn = data);
@@ -21,7 +22,7 @@ export class HeaderComponent implements OnInit {
     this.identificationNumber = this.userService.getIdentificationNumber();
   }
 
-  logout(){
+  logout() {
     this.userService.logout();
     this.isLoggedIn = false;
     this.router.navigateByUrl('');

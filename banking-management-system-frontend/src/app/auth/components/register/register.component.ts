@@ -47,30 +47,32 @@ export class RegisterComponent implements OnInit {
       firstName: ['', [Validators.required]],
       phoneNumber: ['', [Validators.required]],
       postCode: ['', [Validators.required]],
-      street: ['', [Validators.required,Validators.minLength]],
+      street: ['', [Validators.required, Validators.minLength]],
       lastName: ['', [Validators.required]],
     });
   }
+
   signup() {
     this.isRequestSent = true;
-      this.registerRequest.firstName = this.registerForm.get('firstName').value;
-      this.registerRequest.lastName = this.registerForm.get('lastName').value;
-      this.registerRequest.password = this.registerForm.get('password').value;
-      this.registerRequest.email = this.registerForm.get('email').value;
-      this.registerRequest.city = this.registerForm.get('city').value;
-      this.registerRequest.street = this.registerForm.get('street').value;
-      this.registerRequest.postCode = this.registerForm.get('postCode').value;
-      this.registerRequest.houseNumber = this.registerForm.get('houseNumber').value;
-      this.registerRequest.phoneNumber = this.registerForm.get('phoneNumber').value;
-      this.registerRequest.dateOfBirth = this.registerForm.get('dateOfBirth').value;
+    this.registerRequest.firstName = this.registerForm.get('firstName').value;
+    this.registerRequest.lastName = this.registerForm.get('lastName').value;
+    this.registerRequest.password = this.registerForm.get('password').value;
+    this.registerRequest.email = this.registerForm.get('email').value;
+    this.registerRequest.city = this.registerForm.get('city').value;
+    this.registerRequest.street = this.registerForm.get('street').value;
+    this.registerRequest.postCode = this.registerForm.get('postCode').value;
+    this.registerRequest.houseNumber = this.registerForm.get('houseNumber').value;
+    this.registerRequest.phoneNumber = this.registerForm.get('phoneNumber').value;
+    this.registerRequest.dateOfBirth = this.registerForm.get('dateOfBirth').value;
 
     this.userService.signup(this.registerRequest).subscribe(data => {
       this.isRequestSent = false;
       this.isError = false;
       console.log("register success")
       this.router.navigate(['/login'],
-              { queryParams: { registered: 'true' } }).then(() =>{
-        console.log("successfully navigating to the login view")}).catch((reason => {
+        {queryParams: {registered: 'true'}}).then(() => {
+        console.log("successfully navigating to the login view")
+      }).catch((reason => {
         console.log("failed navigating to the login view")
       }));
     }, error => {
@@ -78,7 +80,7 @@ export class RegisterComponent implements OnInit {
       this.isRequestSent = false;
       console.log("błąd rejestracji")
       this.snackBar.open('Ups, cos poszło nie tak.',
-        '', {duration: 6000, panelClass: 'red-snackbar',verticalPosition:"top",horizontalPosition:"center"});
+        '', {duration: 6000, panelClass: 'red-snackbar', verticalPosition: "top", horizontalPosition: "center"});
     });
   }
 }

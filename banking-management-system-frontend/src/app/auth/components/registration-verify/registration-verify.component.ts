@@ -12,7 +12,7 @@ import {Subscription} from "rxjs";
 export class RegistrationVerifyComponent implements OnInit {
 
   subscription: Subscription = new Subscription();
-  token:string;
+  token: string;
 
   constructor(private userService: UserService,
               private route: ActivatedRoute) {

@@ -24,8 +24,8 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
 import {NgxMaskModule} from "ngx-mask";
-import { RegistrationVerifyComponent } from './components/registration-verify/registration-verify.component';
-import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import {RegistrationVerifyComponent} from './components/registration-verify/registration-verify.component';
+import {ChangePasswordComponent} from './components/change-password/change-password.component';
 
 
 @NgModule({

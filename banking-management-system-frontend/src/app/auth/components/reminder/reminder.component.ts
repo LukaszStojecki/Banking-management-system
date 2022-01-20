@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../service/user.service";
 import {HttpErrorResponse} from "@angular/common/http";
@@ -15,29 +15,41 @@ export class ReminderComponent implements OnInit {
 
   constructor(private userService: UserService,
               private fb: FormBuilder,
-              private snackBar:MatSnackBar) { }
+              private snackBar: MatSnackBar) {
+  }
 
   ngOnInit(): void {
     this.formGroup = this.fb.group({
-      email: ['', [ Validators.required,Validators.email]]
+      email: ['', [Validators.required, Validators.email]]
     });
   }
+
   get f() {
     return this.formGroup.controls;
   }
 
-  reminderIdentificationNumber(){
+  reminderIdentificationNumber() {
     this.userService.reminderIdentificationNumber(this.f.email.value)
       .subscribe(data => {
       }, (error: HttpErrorResponse) => {
         if (error.status === 404) {
-          this.snackBar.open('Niepoprawny adres e-mail. Wprowadź poprawny adres','',{duration:3000,panelClass: 'red-snackbar',verticalPosition:'top',horizontalPosition:'center'})
+          this.snackBar.open('Niepoprawny adres e-mail. Wprowadź poprawny adres', '', {
+            duration: 3000,
+            panelClass: 'red-snackbar',
+            verticalPosition: 'top',
+            horizontalPosition: 'center'
+          })
         } else {
           console.log(error);
           this.snackBar.open
           ('Sprawdź swoją pocztę,został wysłany e-mail z Twoim loginem. ' +
             ' Możesz poprosić o e-mail z nowym linkiem poprzez\n' +
-            ' wpisując nowy adres w polu poniżej.','',{duration:6000,panelClass: 'green-snackbar',verticalPosition:'top',horizontalPosition:'center'});
+            ' wpisując nowy adres w polu poniżej.', '', {
+            duration: 6000,
+            panelClass: 'green-snackbar',
+            verticalPosition: 'top',
+            horizontalPosition: 'center'
+          });
         }
       });
   }

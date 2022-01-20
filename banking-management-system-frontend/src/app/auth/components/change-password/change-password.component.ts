@@ -24,6 +24,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
     return (invalidCtrl || invalidParent);
   }
 }
+
 @Component({
   selector: 'app-change-password',
   templateUrl: './change-password.component.html',
@@ -54,31 +55,32 @@ export class ChangePasswordComponent implements OnInit {
     this.changeForm = this.formBuilder.group({
       newPassword: ['', [Validators.required]],
       confirmationPassword: ['']
-    },{validators: this.checkPasswords});
+    }, {validators: this.checkPasswords});
   }
 
 
-  checkPasswords: ValidatorFn = (group: AbstractControl):  ValidationErrors | null => {
+  checkPasswords: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
     let pass = group.get('newPassword').value;
     let confirmPass = group.get('confirmationPassword').value
-    return pass === confirmPass ? null : { notSame: true }
+    return pass === confirmPass ? null : {notSame: true}
   }
 
-  changePassword(){
+  changePassword() {
     this.passwordResetTokenRequest.newPassword = this.changeForm.get('newPassword').value;
     this.passwordResetTokenRequest.confirmationPassword = this.changeForm.get('confirmationPassword').value;
 
-    this.userService.changePassword(this.token,this.passwordResetTokenRequest).subscribe(data => {
+    this.userService.changePassword(this.token, this.passwordResetTokenRequest).subscribe(data => {
       console.log("change password success")
       this.router.navigate(['/login'],
-        { queryParams: { changed: 'true' } }).then(() =>{
-        console.log("successfully navigating to the login view")}).catch((reason => {
+        {queryParams: {changed: 'true'}}).then(() => {
+        console.log("successfully navigating to the login view")
+      }).catch((reason => {
         console.log("failed navigating to the login view")
       }));
     }, error => {
       console.log("błąd zmiany hasła")
       this.snackBar.open('Ups, cos poszło nie tak. Spróbuj ponowanie',
-        '', {duration: 6000, panelClass: 'red-snackbar',verticalPosition:"top",horizontalPosition:"center"});
+        '', {duration: 6000, panelClass: 'red-snackbar', verticalPosition: "top", horizontalPosition: "center"});
     });
   }
 

@@ -27,18 +27,29 @@ export class ResetPasswordComponent implements OnInit {
   get f() {
     return this.resetGroup.controls;
   }
-  resetPassword(){
+
+  resetPassword() {
     this.userService.forgotPassword(this.f.email.value)
       .subscribe(data => {
       }, (error: HttpErrorResponse) => {
         if (error.status === 404) {
-          this.snackBar.open('Niepoprawny adres e-mail. Wprowadź poprawny adres','',{duration:3000,panelClass: 'red-snackbar',verticalPosition:'top',horizontalPosition:'center'})
+          this.snackBar.open('Niepoprawny adres e-mail. Wprowadź poprawny adres', '', {
+            duration: 3000,
+            panelClass: 'red-snackbar',
+            verticalPosition: 'top',
+            horizontalPosition: 'center'
+          })
         } else {
           console.log(error);
           this.snackBar.open
           ('Sprawdź swoją pocztę,został wysłany e-mail z linkiem do resetowania hasła. ' +
             ' Możesz poprosić o e-mail z nowym linkiem poprzez\n' +
-            ' wpisując nowy adres w polu poniżej.','',{duration:6000,panelClass: 'green-snackbar',verticalPosition:'top',horizontalPosition:'center'});
+            ' wpisując nowy adres w polu poniżej.', '', {
+            duration: 6000,
+            panelClass: 'green-snackbar',
+            verticalPosition: 'top',
+            horizontalPosition: 'center'
+          });
         }
       });
   }

@@ -8,16 +8,17 @@ import {RegistrationVerifyComponent} from "./components/registration-verify/regi
 import {ChangePasswordComponent} from "./components/change-password/change-password.component";
 
 const routes: Routes = [
-  {path:'login',component:LoginComponent},
-  {path:'reset-password',component:ResetPasswordComponent},
-  {path:'reminder-number',component:ReminderComponent},
-  {path:'register',component:RegisterComponent},
-  {path:'registration-verify',component:RegistrationVerifyComponent},
-  {path:'change-password',component:ChangePasswordComponent}
+  {path: 'login', component: LoginComponent},
+  {path: 'reset-password', component: ResetPasswordComponent},
+  {path: 'reminder-number', component: ReminderComponent},
+  {path: 'register', component: RegisterComponent},
+  {path: 'registration-verify', component: RegistrationVerifyComponent},
+  {path: 'change-password', component: ChangePasswordComponent}
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class AuthRoutingModule { }
+export class AuthRoutingModule {
+}

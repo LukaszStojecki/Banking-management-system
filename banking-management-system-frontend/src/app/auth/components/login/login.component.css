@@ -14,13 +14,14 @@ h1 {
   margin-bottom: 10px;
   float: none;
 }
+
 #nillable, #nillable2 {
   font-size: 20px;
   text-align: left;
   float: left;
 }
 
-.form{
+.form {
   display: block;
   width: 100%;
   padding: 0 5px;
@@ -35,6 +36,7 @@ h1 {
   top: 75px;
   float: left;
 }
+
 html, body, input, button, * {
   font-family: Arial, sans-serif !important;
 }
@@ -46,7 +48,8 @@ html, body, input, button, * {
   background: red;
   border: 1px solid;
 }
-.loginPanel{
+
+.loginPanel {
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -60,7 +63,7 @@ html, body, input, button, * {
   text-align: justify;
 }
 
-#reminder-number-id{
+#reminder-number-id {
   padding-top: 20px;
   font-size: 14px;
 }
@@ -76,11 +79,12 @@ html, body, input, button, * {
   width: fit-content;
   position: relative;
 }
-a{
+
+a {
   color: white;
 }
 
-.mx-auto{
+.mx-auto {
   display: block;
 }
 

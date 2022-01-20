@@ -18,6 +18,8 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ToastrModule} from "ngx-toastr";
 import {NgxWebstorageModule} from "ngx-webstorage";
 import {NgxMaskModule} from "ngx-mask";
+import {BankModule} from "../bank/bank.module";
+import {MatTableModule} from "@angular/material/table";
 
 
 @NgModule({
@@ -42,7 +44,9 @@ import {NgxMaskModule} from "ngx-mask";
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     NgxWebstorageModule.forRoot(),
-    NgxMaskModule.forRoot()
+    NgxMaskModule.forRoot(),
+    BankModule
   ]
 })
-export class SharedModule { }
+export class SharedModule {
+}
