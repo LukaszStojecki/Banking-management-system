@@ -1,12 +1,8 @@
 package pl.stojecki.bankingmanagementsystem.user.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
-import java.time.Instant;
 import java.time.LocalDate;
 
 @Entity
@@ -14,6 +10,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EqualsAndHashCode(exclude = "user")
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

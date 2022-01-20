@@ -1,0 +1,79 @@
+<h1>Rejestracja</h1>
+<mat-card class="col-md-6" *ngIf="!isRequestSent">
+  <form [formGroup]="registerForm" (ngSubmit)="signup()">
+    <mat-form-field class="full-width-input" appearance="outline">
+      <input matInput placeholder="Imię" formControlName="firstName" type="text">
+      <mat-error *ngIf="!registerForm.get('firstName').valid && registerForm.get('firstName').touched">
+        Imię jest <strong>wymagane</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width-input" appearance="outline">
+      <input matInput placeholder="Nazwisko" formControlName="lastName">
+      <mat-error *ngIf="!registerForm.get('lastName').valid && registerForm.get('lastName').touched">
+        Nazwisko jest <strong>wymagane</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width-input" appearance="outline">
+      <input matInput placeholder="Adres email" type="email" formControlName="email">
+      <mat-error *ngIf="!registerForm.get('email').valid && registerForm.get('email').touched">
+        Email jest <strong>wymagany</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width-input" appearance="outline">
+      <input matInput placeholder="Hasło" type="password" formControlName="password">
+      <mat-error
+        *ngIf="!registerForm.get('password').valid && registerForm.get('password').touched">
+        Hasło jest <strong>wymagane</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width-input" appearance="outline">
+      <input matInput placeholder="Nr telefonu" formControlName="phoneNumber">
+      <mat-error
+        *ngIf="!registerForm.get('phoneNumber').valid && registerForm.get('phoneNumber').touched">
+        Numer telefonu jest <strong>wymagany</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width-input" appearance="outline">
+      <input matInput placeholder="Miejscowość" formControlName="city">
+      <mat-error *ngIf="!registerForm.get('city').valid && registerForm.get('city').touched">
+        Miejscowość jest <strong>wymagana</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width-input" appearance="outline">
+      <input matInput placeholder="Ulica" formControlName="street" type="text">
+      <mat-error *ngIf="!registerForm.get('street').valid && registerForm.get('street').touched">
+        Ulica jest <strong>wymagana</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width-input" appearance="outline">
+      <input matInput placeholder="Numer mieszkania" formControlName="houseNumber" type="text">
+      <mat-error *ngIf="!registerForm.get('houseNumber').valid && registerForm.get('houseNumber').touched">
+        Numer mieszkania jest <strong>wymagany</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width-input" appearance="outline">
+      <input matInput placeholder="Kod pocztowy" formControlName="postCode">
+      <mat-error *ngIf="!registerForm.get('postCode').valid && registerForm.get('postCode').touched">
+        Kod pocztowy jest <strong>wymagany</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width-input" appearance="outline">
+      <input matInput [matDatepicker]="picker" formControlName="dateOfBirth" placeholder="Data urodzenia">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error
+        *ngIf="!registerForm.get('dateOfBirth').valid && registerForm.get('dateOfBirth').touched">
+        Data urodzenia jest <strong>wymagana</strong>
+      </mat-error>
+    </mat-form-field>
+    <button [disabled]="registerForm.invalid" mat-raised-button color="primary">Wyślij</button>
+  </form>
+</mat-card>
+<mat-card *ngIf="isRequestSent">
+  <mat-spinner class="mx-auto"></mat-spinner>
+  <h4 class="mt-3"><i>Trwa przetwarzanie żądania</i></h4>
+</mat-card>
+
+
+
+

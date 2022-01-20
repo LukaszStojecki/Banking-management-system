@@ -1,0 +1,13 @@
+table {
+  width: 100%;
+}
+
+.example-container {
+  max-height: 400px;
+  overflow: auto;
+  text-align: center;
+}
+
+
+
+

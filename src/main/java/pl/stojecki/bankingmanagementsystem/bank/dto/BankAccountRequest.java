@@ -1,5 +1,4 @@
-package pl.stojecki.bankingmanagementsystem.user.dto;
-
+package pl.stojecki.bankingmanagementsystem.bank.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LogOutRequest {
+public class BankAccountRequest {
 
-    private Long userId;
+    private String accountType;
+
 }

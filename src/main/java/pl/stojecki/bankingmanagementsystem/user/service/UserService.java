@@ -9,10 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.stojecki.bankingmanagementsystem.exception.BadRequestException;
-import pl.stojecki.bankingmanagementsystem.exception.ConflictException;
-import pl.stojecki.bankingmanagementsystem.exception.EmailException;
-import pl.stojecki.bankingmanagementsystem.exception.NotFoundException;
+import pl.stojecki.bankingmanagementsystem.exception.*;
 import pl.stojecki.bankingmanagementsystem.user.dto.*;
 import pl.stojecki.bankingmanagementsystem.user.model.*;
 import pl.stojecki.bankingmanagementsystem.user.repository.AddressRepository;
@@ -59,7 +56,7 @@ public class UserService {
 
         mailService.sendRegisterEmail(new NotificationEmail("Please activate your account", ""
                 + user.getEmail(), "Please click the link below to activate your account " + "\n" + "\n" +
-                "http:localhost:8080/auth/accountVerification/" + token + "\n" + "\n" +
+                "http://localhost:4200/registration-verify?token=" + token + "\n" + "\n" +
                 " Your identification number is: " + identifier
                 + "\n" + "\n" + "We are informing you that the above link will expire 24 hours after being sent."));
     }
@@ -201,9 +198,17 @@ public class UserService {
                 .build();
     }
 
-   @Transactional
-    public void deleteByUserId(Long userId) throws NotFoundException {
-       refreshTokenRepository.deleteByUser(userRepository.findById(userId)
-               .orElseThrow(() -> new NotFoundException("User of " + userId + " not found")));
-   }
+    public void logout(RefreshTokenRequest refreshTokenRequest) {
+        refreshTokenService.deleteRefreshToken(refreshTokenRequest.getRefreshToken());
+    }
+
+    @Transactional
+    public User getCurrentUser() throws UnauthorizedException {
+        try {
+           User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            return userRepository.findByIdentificationNumber(user.getUsername()).get();
+        } catch (Exception e) {
+            throw new UnauthorizedException("You are not authenticated");
+        }
+    }
 }

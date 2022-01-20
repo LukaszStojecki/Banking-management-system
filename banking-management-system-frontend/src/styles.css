@@ -1,0 +1,65 @@
+/* You can add global styles to this file, and also import other style files */
+header {
+  background: #262930;
+  color: #bab9b9;
+
+}
+
+footer {
+  padding-top: 25px;
+  padding-bottom: 25px;
+  background: #262930;
+  color: #bab9b9;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  font-family: 'Baloo Tamma 2', cursive;
+  font-size: 16px;
+  margin: 0;
+  text-align: center;
+  flex-wrap: nowrap;
+}
+
+.container {
+  margin: 0 auto;
+  padding-left: 60px;
+  padding-right: 60px;
+  width: 100%;
+  align-items: center;
+  padding-top: 20px;
+}
+
+app-root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+main {
+  flex-grow: 1;
+  flex-basis: auto;
+  background: url("assets/main.jpg");
+}
+
+.green-snackbar {
+  color: white;
+  background-color: #27D20D;
+}
+
+.blue-snackbar {
+  color: white;
+  background-color: #0062CC;
+}
+
+.red-snackbar {
+  color: white;
+  background-color: #ff002f;
+}
+
+
+

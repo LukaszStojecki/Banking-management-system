@@ -1,0 +1,41 @@
+<div class="header_container">
+  <div class="header_left">
+    <h1>System bankowości elektronicznej</h1>
+  </div>
+  <div class="header-left" fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+    <ul fxLayout="row" fxLayoutGap="25px">
+      <li>
+        <button mat-icon-button>
+          <mat-icon routerLink="/login" routerLinkActive="active">login</mat-icon>
+        </button>
+      </li>
+      <li>
+        <button mat-icon-button>
+          <mat-icon>help_outline</mat-icon>
+        </button>
+      </li>
+      <li>
+        <button mat-icon-button *ngIf="!isLoggedIn">
+          <mat-icon routerLink="/register" routerLinkActive="active">how_to_reg</mat-icon>
+        </button>
+      </li>
+      <li>
+        <button mat-button [matMenuTriggerFor]="menu" *ngIf="isLoggedIn">
+          <mat-icon>person_outline</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>exit_to_app</mat-icon>
+            Wyloguj
+          </button>
+        </mat-menu>
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+
+
+
+

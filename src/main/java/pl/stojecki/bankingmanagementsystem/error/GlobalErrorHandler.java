@@ -40,4 +40,9 @@ public class GlobalErrorHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
                 .body(new ErrorDetails(e.getMessage()));
     }
+    @ExceptionHandler(value = UnauthorizedException.class)
+    public ResponseEntity<Object> handleTokenRefreshException(UnauthorizedException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(new ErrorDetails(e.getMessage()));
+    }
 }
