@@ -14,7 +14,7 @@ import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {AuthModule} from "./auth/auth.module";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {NgxWebstorageModule} from "ngx-webstorage";
 import {ToastrModule} from "ngx-toastr";
 import {ReactiveFormsModule} from "@angular/forms";
@@ -24,6 +24,8 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {NgxMaskModule} from "ngx-mask";
+import {BankModule} from "./bank/bank.module";
+import {TokenInterceptor} from "./interceptor/token-interceptor";
 
 @NgModule({
   declarations: [
@@ -52,9 +54,10 @@ import {NgxMaskModule} from "ngx-mask";
     MatIconModule,
     MatMenuModule,
     MatExpansionModule,
-    NgxMaskModule.forRoot()
+    NgxMaskModule.forRoot(),
+    BankModule
   ],
-  providers: [],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }],
   bootstrap: [AppComponent],
 })
 export class AppModule {
